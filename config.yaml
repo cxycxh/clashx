@@ -1,0 +1,195 @@
+#---------------------------------------------------#
+## 配置文件需要放置在 $HOME/.config/clash/*.yaml
+
+## 这份文件是clashX的基础配置文件，请尽量新建配置文件进行修改。
+## ！！！只有这份文件的端口设置会随ClashX启动生效,HTTP and SOCKS5端口会自动转换成mixed端口！
+
+## 如果您不知道如何操作，请参阅 官方Github文档 https://github.com/Dreamacro/clash/blob/dev/README.md
+# 
+#---------------------------------------------------#
+
+# (HTTP and SOCKS5 in one port)
+mixed-port: 7890
+# RESTful API for clash
+external-controller: 127.0.0.1:9090
+mode: rule
+
+proxy-providers:
+  eternity:
+    type: http
+    url: "https://raw.githubusercontent.com/alanbobs999/TopFreeProxies/master/Eternity.yaml"
+    # url: "https://raw.githubusercontent.com/alanbobs999/TopFreeProxies/master/update/provider/provider-all.yml"
+    interval: 3600
+    path: ./eternity.yaml
+    health-check:
+      enable: true
+      interval: 600
+      # lazy: true
+      url: http://www.gstatic.com/generate_204
+  ermaozi:
+    type: http
+    url: "https://raw.githubusercontent.com/ermaozi/get_subscribe/main/subscribe/clash.yml"
+    interval: 3600
+    path: ./ermaozi.yaml
+    health-check:
+      enable: true
+      interval: 600
+      # lazy: true
+      url: http://www.gstatic.com/generate_204
+  v2rayshare:
+    type: http
+    url: "https://v2rayshare.com/wp-content/uploads/2022/10/20221012.yaml"
+    interval: 3600
+    path: ./v2rayshare.yaml
+    health-check:
+      enable: true
+      interval: 600
+      # lazy: true
+      url: http://www.gstatic.com/generate_204
+  openrunner:
+    type: http
+    url: "https://raw.githubusercontent.com/openrunner/clash-freenode/main/clash.yaml"
+    #https://cdn.statically.io/gh/openrunner/clash-freenode/main/clash.yaml
+    interval: 3600
+    path: ./openrunner.yaml
+    health-check:
+      enable: true
+      interval: 600
+      url: http://www.gstatic.com/generate_204
+
+proxies:
+
+proxy-groups: 
+  - name: Proxy
+    type: select
+    use:
+      - eternity
+      - ermaozi
+      - v2rayshare
+      - openrunner
+
+rule-providers:
+  reject:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/reject.txt"
+    path: ./ruleset/reject.yaml
+    interval: 86400
+
+  icloud:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/icloud.txt"
+    path: ./ruleset/icloud.yaml
+    interval: 86400
+
+  apple:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/apple.txt"
+    path: ./ruleset/apple.yaml
+    interval: 86400
+
+  google:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/google.txt"
+    path: ./ruleset/google.yaml
+    interval: 86400
+
+  proxy:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/proxy.txt"
+    path: ./ruleset/proxy.yaml
+    interval: 86400
+
+  direct:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/direct.txt"
+    path: ./ruleset/direct.yaml
+    interval: 86400
+
+  private:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/private.txt"
+    path: ./ruleset/private.yaml
+    interval: 86400
+
+  gfw:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/gfw.txt"
+    path: ./ruleset/gfw.yaml
+    interval: 86400
+
+  greatfire:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/greatfire.txt"
+    path: ./ruleset/greatfire.yaml
+    interval: 86400
+
+  tld-not-cn:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/tld-not-cn.txt"
+    path: ./ruleset/tld-not-cn.yaml
+    interval: 86400
+
+  telegramcidr:
+    type: http
+    behavior: ipcidr
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/telegramcidr.txt"
+    path: ./ruleset/telegramcidr.yaml
+    interval: 86400
+
+  cncidr:
+    type: http
+    behavior: ipcidr
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/cncidr.txt"
+    path: ./ruleset/cncidr.yaml
+    interval: 86400
+
+  lancidr:
+    type: http
+    behavior: ipcidr
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/lancidr.txt"
+    path: ./ruleset/lancidr.yaml
+    interval: 86400
+
+  applications:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/applications.txt"
+    path: ./ruleset/applications.yaml
+    interval: 86400
+
+
+rules:
+  - RULE-SET,applications,DIRECT
+  - DOMAIN,clash.razord.top,DIRECT
+  - DOMAIN-SUFFIX,letmeread.net,DIRECT
+  - DOMAIN-SUFFIX,github.com,DIRECT
+  - DOMAIN-SUFFIX,unrealengine.com,DIRECT
+  - DOMAIN-SUFFIX,epicgames.com,DIRECT
+  - DOMAIN-SUFFIX,akamaized.net,DIRECT
+  - DOMAIN-SUFFIX,v2ex.com,Proxy
+  - DOMAIN-SUFFIX,cn.bing.com,DIRECT
+  - DOMAIN-SUFFIX,mirrors.ustc.edu.cn,DIRECT
+  - DOMAIN-SUFFIX,mirrors.tuna.tsinghua.edu.cn,DIRECT
+  - RULE-SET,private,DIRECT
+  - RULE-SET,reject,REJECT
+  - RULE-SET,icloud,DIRECT
+  - RULE-SET,apple,DIRECT
+  - RULE-SET,google,DIRECT
+  - RULE-SET,proxy,Proxy
+  - RULE-SET,direct,DIRECT
+  - RULE-SET,lancidr,DIRECT
+  - RULE-SET,cncidr,DIRECT
+  - RULE-SET,telegramcidr,Proxy
+  - GEOIP,LAN,DIRECT
+  - GEOIP,CN,DIRECT
+  - MATCH,Proxy
